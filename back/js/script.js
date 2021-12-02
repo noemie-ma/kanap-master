@@ -16,13 +16,14 @@ const showProducts = async() => {
 
     products
       .map(product => (
-        ` 
+        `
           <a href="./product.html?id=42">
-            <img class="product-picture" src="${product.imageUrl}" alt="${product.altTxt}" />
-            <h3 class="product-name">${product.name}</h3>
-            <p class="product-description">${product.description}</p>
-            </div>
-          </section>
+            <article>
+              <img src="${product.imageUrl}" alt="${product.altTxt}" />
+              <h3 class="productName">${product.name}</h3>
+              <p class="productDescription">${product.description}</p>
+            </article>
+          </a>
         `
       )).join('')
   );
