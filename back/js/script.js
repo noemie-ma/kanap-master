@@ -9,6 +9,7 @@ const fetchProducts = async() => {
     console.log(products);
 };
 
+// Showing products on the index page
 const showProducts = async() => {
   await fetchProducts();
 
