@@ -1,35 +1,25 @@
-// Permet de récuperer l'ID du produit dans l'url (redirection, en gros)
-function getParamId() {
-  return new URL(location.href).searchParams.get("id");
-}
+var searchUrl = new URLSearchParams(window.location.search);
+var getId = searchUrl.get("id");
+console.log(getId);
 
-// Fonction qui permet de recuperer le produit afin de l'afficher sur cette page
-async function getProduct(productId) {
-  return await fetch(`http://127.0.0.1:3000/api/products/${productId}`)
-    .then((res) => res.json())
-    .then((products) => products)
-    .catch((error) => {
-      alert("PLUS EN STOCK"); // Petite alerte en cas de manque de stock
-    });
-}
+(async function () {
+  const response = await fetch("http://127.0.0.1:3000/api/products/${getId}");
+  const product = await response.json();
 
-// Remplissage du menu des couleurs disponibles
-function colorOptions(product) {
-  const productColors = product.colors;
-  const productOption = document.getElementById("productOption"); // Les couleurs s'adaptent par rapport au choix du produit sur la page index.html
-  productColors.forEach((color) => {
-    const optionColor = document.createElement("option");
-    optionColor.setAttribute("value", color);
-    optionColor.innerHTML = color;
-    productOption.appendChild(optionColor);
-  });
-}
-
-// Fonction pour que la demande ci-dessus s'affiche dans le html de la page product.html
-function hydrateProduct(product) {
-  document.getElementById("item_img").src = product.imageUrl;
+  document.getElementsByTagName("img")[0].src = product.imageUrl;
+  let test1 = document.querySelector(".item_img img");
+  test1 = product;
+  document.getElementsByTagName("img")[0].alt = product.altTxt;
   document.getElementById("title").textContent = product.name;
-  document.getElementById("price").textContent = `${product.price / 100}.00 €`;
+  document.getElementById("price").textContent = product.price;
   document.getElementById("description").textContent = product.description;
-  colorOptions(product);
-}
+  document.getElementById("colors").textContent = product.colors;
+
+  let colors = product.colors;
+  for (let color of colors) {
+    let option = document.createElement("option");
+    option.value = color;
+    option.innerText = color;
+    document.getElementById("colors").appendChild(option);
+  }
+})();
