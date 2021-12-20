@@ -20,6 +20,16 @@ function loadProduct() {
 }
 
 function displayProduct(product) {
+  const selectedProduct = {
+    id: product._id,
+    imageUrl: product.imageUrl,
+    name: product.name,
+    price: product.price,
+    description: product.description,
+    altTxt: product.altTxt,
+    quantite: 0,
+    color: "",
+  };
   console.log(product);
   document.querySelector(
     ".item__img"
@@ -40,7 +50,8 @@ function displayProduct(product) {
     .addEventListener("change", function (event) {
       event.stopPropagation();
       event.preventDefault();
-      controleColor(this.value);
+      let valid = controleColor(this.value);
+      if (valid) selectedProduct.color = this.value;
     });
 
   document
@@ -48,7 +59,8 @@ function displayProduct(product) {
     .addEventListener("change", function (event) {
       event.stopPropagation();
       event.preventDefault();
-      controleQuantite(this.value);
+      let valid = controleQuantite(this.value);
+      if (valid) selectedProduct.quantite = parseInt(this.value);
     });
 
   document
@@ -61,7 +73,9 @@ function displayProduct(product) {
       );
       let validColor = controleColor(document.getElementById("colors").value);
       if (validQuantite && validColor) {
-        AjouterProduitAuPanier();
+        let tableauLocalStorage = getLocalStorage();
+        AjouterProduitAuPanier(selectedProduct, tableauLocalStorage);
+        setLocalStorage(tableauLocalStorage);
       }
     });
 }
@@ -85,14 +99,31 @@ function controleColor(color) {
   return valid;
 }
 
-function AjouterProduitAuPanier() {
-  console.log("je suis la ");
+function setLocalStorage(productCartStorage) {
+  // transforme le fichier en json et envoie la clé du produit dans le localstorage
+  localStorage.setItem("products", JSON.stringify(productCartStorage));
+  alert("Panier mis à jour!!");
 }
-// Potit bout de local storage : pour ajouter un produit dans le locaStorage
-/* function addProductLocalStorage(productCart, productCartStorage) {
-	// ajout dans le tableau de l'objet avec la couleur choisie
-	productCartStorage.push(productCart);
 
-	// transforme le fichier en json et envoie la clé du produit dans le localstorage
-	localStorage.setItem('products', JSON.stringify(productCartStorage));
-} */
+function AjouterProduitAuPanier(productCart, productCartStorage) {
+  let existe = false;
+  // ajout dans le tableau de l'objet avec la couleur choisie et l'article
+  productCartStorage.forEach((element) => {
+    if (element.id == productCart.id && element.color == productCart.color) {
+      element.quantite += productCart.quantite;
+      existe = true;
+    }
+  });
+
+  if (!existe) productCartStorage.push(productCart);
+}
+// --------------------recuperer localStorage
+function getLocalStorage() {
+  // Json.parse convertit les donnée au format json qui sont dans le local en objet javascript
+  let productCartStorage = [];
+
+  if (localStorage.getItem("products"))
+    productCartStorage = JSON.parse(localStorage.getItem("products"));
+
+  return productCartStorage;
+}
