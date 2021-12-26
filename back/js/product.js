@@ -1,6 +1,6 @@
 var searchUrl = new URLSearchParams(window.location.search);
 var getId = searchUrl.get("id");
-console.log(getId);
+
 const urlProduct = "http://127.0.0.1:3000/api/products/" + getId;
 loadProduct();
 function loadProduct() {
@@ -80,50 +80,24 @@ function displayProduct(product) {
     });
 }
 
-// controler la quantité
-function controleQuantite(quantite) {
-  let valid = true;
-  if (quantite < 1 || quantite > 100) {
-    valid = false;
-    alert("Veuillez choisir une quantite entre 1 et 100! ");
-  }
-  return valid;
-}
-
-function controleColor(color) {
-  let valid = true;
-  if (color == "") {
-    valid = false;
-    alert("Veuillez choisir une couleur !");
-  }
-  return valid;
-}
-
-function setLocalStorage(productCartStorage) {
-  // transforme le fichier en json et envoie la clé du produit dans le localstorage
-  localStorage.setItem("products", JSON.stringify(productCartStorage));
-  alert("Panier mis à jour!!");
-}
-
 function AjouterProduitAuPanier(productCart, productCartStorage) {
   let existe = false;
   // ajout dans le tableau de l'objet avec la couleur choisie et l'article
   productCartStorage.forEach((element) => {
     if (element.id == productCart.id && element.color == productCart.color) {
-      element.quantite += productCart.quantite;
+      let valid = controleQuantite(element.quantite + productCart.quantite);
+      if (valid) element.quantite += productCart.quantite;
+      else {
+        alert(
+          "Il y a deja une quatité dans le panier de:" +
+            element.quantite +
+            " et vous venez d'ajouter:" +
+            productCart.quantite
+        );
+      }
       existe = true;
     }
   });
 
   if (!existe) productCartStorage.push(productCart);
-}
-// --------------------recuperer localStorage
-function getLocalStorage() {
-  // Json.parse convertit les donnée au format json qui sont dans le local en objet javascript
-  let productCartStorage = [];
-
-  if (localStorage.getItem("products"))
-    productCartStorage = JSON.parse(localStorage.getItem("products"));
-
-  return productCartStorage;
 }
