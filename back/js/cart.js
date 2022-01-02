@@ -1,22 +1,20 @@
-function getPanier () {
+function getPanier() {
+  // Json.parse convertit les donnée au format json qui sont dans le local en objet javascript
+  const productCartStorage = JSON.parse(localStorage.getItem("products"));
 
-// Json.parse convertit les donnée au format json qui sont dans le local en objet javascript
-const productCartStorage = JSON.parse(localStorage.getItem("products"));
+  // Selection de la classe où le code HTML sera injecté
+  let containerPanier = document.querySelector("#cart_items");
+  // Selection bouton envoie formulaire
+  const submitForm = document.querySelector("#order");
+  // Si panier vide
+  const cartIsEmpty =
+    productCartStorage === null || productCartStorage.length === 0;
 
-// Selection de la classe où le code HTML sera injecté
-let containerPanier = document.querySelector("#cart_items");
-// Selection bouton envoie formulaire
-const submitForm = document.querySelector("#order");
-// Si panier vide
-const cartIsEmpty =
-  productCartStorage === null || productCartStorage.length === 0;
-
-(async () => {
-  hydrateCart();
-  totalPrice();
-  await onSubmitOrderForm();
-})();
-
+  (async () => {
+    hydrateCart();
+    totalPrice();
+    await onSubmitOrderForm();
+  })();
 }
 
 // Récupère les produits dans le localStorage pour hydrater la page panier
@@ -61,9 +59,8 @@ function hydrateCart() {
 
 // Ajoute tous les prix des produits dans le tableau et calcule le prix total (reducer)
 function totalPrice() {
-
   // Nombres d'articles selectionnés dans le tableau
-  let getQuantity = product[];
+  let getQuantity = [];
   for (let p = 0; p < productCartStorage.length; p++) {
     productCartStorage[p].quantity;
     getQuantity.push(productCartStorage[p].quantity);
@@ -93,9 +90,10 @@ function totalPrice() {
 
 function cartOrderDetails() {
   let cartOrderDetails = {
-    'firstName': '',
-    'lastName': '',
-    'address': '',
-    'city': '',
-    'email': '', }
+    firstName: "",
+    lastName: "",
+    address: "",
+    city: "",
+    email: "",
+  };
 }
