@@ -15,13 +15,13 @@ function getPanier() {
       <div class="cart__item__content">
         <div class="cart__item__content__description">
           <h2>${product.name}</h2>
-          <p>${product.color}</p>
-          <p>${product.price}</p>
+          <p>Couleur : ${product.color}</p>
+          <p>Prix : ${product.price} € </p>
         </div>
         <div class="cart__item__content__settings">
           <div class="cart__item__content__settings__quantity">
-            <p>Qté : ${product.quantite} </p>
-            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
+            <p>Qté : </p>
+            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="1">
           </div>
           <div class="cart__item__content__settings__delete">
             <p class="deleteItem">Supprimer</p>
@@ -32,19 +32,77 @@ function getPanier() {
         `;
   });
   document.getElementById("cart__items").innerHTML = htmlValue;
-  totalPrice(tableau);
+
+  document.querySelectorAll(".itemQuantity").forEach((element) => {
+    element.addEventListener("change", function (event) {
+      event.stopPropagation();
+      event.preventDefault();
+      // Interception de l'évènement de modification de la quantité totale
+      //1/ Controle de la quantité : est bonne si elle est entre 0 et 100
+      let valid = controleQuantite(parseInt(this.value));
+      //2/ Met à jour l'element dans le local storage
+      if (valid) {
+        updateElementLocalStorage(
+          tableau,
+          this.closest(".cart__item").dataset.id,
+          this.closest(".cart__item").dataset.color,
+          this.value
+        );
+      }
+      //3/ Met à jour les totaux
+      totalPrice();
+    });
+  });
+  totalPrice();
 }
 
-function totalPrice(tableauLocaStorage) {
-  let prixTotal = 0;
+/*document.querySelectorAll(".itemQuantity").forEach((element) => {
+  element.addEventListener("change", function (event) {
+    event.stopPropagation();
+    event.preventDefault();
+    // on a intercepter l'evenement de modification de la quantiteTotal
+    //1/ Controler la quantité est bonne : entre 0 et 100
+    let valid = controleQuantite(parseInt(this.value));
+    //2/ mettre à jour  Modifier l'element dans le local storage
+    if (valid) {
+      updateElementLocalStorage(
+        tableau,
+        this.closest(".cart__item").dataset.id,
+        this.closest(".cart__item").dataset.color,
+        this.value
+      );
+    }
+    //3/ mettre à jour les  totaux
+    totalPrice();
+  });
+});
+totalPrice();
+} */
+
+//------ Fonction qui recalcule le total des quantité et du prix
+function totalPrice() {
+  let cart = getLocalStorage();
   let quantiteTotal = 0;
-  tableauLocaStorage.forEach((element) => {});
+  let totalPrix = 0;
+  cart.forEach((article) => {
+    quantiteTotal += parseInt(article.quantite);
+    totalPrix += parseFloat(article.price) * parseInt(article.quantite);
+  });
+
+  document.getElementById("totalQuantity").innerHTML = quantiteTotal;
+  document.getElementById("totalPrice").innerHTML =
+    totalPrix; /*Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "EUR",
+  }).format(totalPrix);*/
 }
 
-// recuperer les elements par id et mettre à jour le textContent
-function textContent(element) {
-  let textContent = "";
-  document.getElementById(element).innerHTML = htmlValue;
-}
+function updateElementLocalStorage(tableau, id, color, quantite) {
+  tableau.forEach((element) => {
+    if (element.id == id && element.color == color) {
+      element.quantite = parseInt(quantite);
+    }
+  });
 
-// Les afficher dans le HTML
+  setLocalStorage(tableau);
+}
