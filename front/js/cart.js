@@ -135,15 +135,22 @@ function updateElementLocalStorage(tableau, id, color, quantite) {
   });
 
   setLocalStorage(tableau);
+  confirmation();
 }
 
 // FORMULAIRE DE RENSEIGNEMENTS
-function validEmail(inputEmailElement) {
-  if (!inputEmailElement.checkValidity()) {
-    inputEmailElement.nextElementSibling.innerHTML =
-      inputEmailElement.validationMessage;
+function validlastName(inputfirstName) {
+  let firstName = new RegExp(
+    "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$",
+    "g"
+  );
+
+  let p = inputfirstName.nextElementSibling;
+
+  if (firstName.test(inputfirstName.value)) {
+    p.innerHTML = "";
   } else {
-    inputEmailElement.nextElementSibling.innerHTML = "";
+    p.innerHTML = "Prénom non valide, veuillez rééssayer";
   }
 }
 
@@ -158,6 +165,45 @@ function validlastName(inputlastName) {
   if (lastName.test(inputlastName.value)) {
     p.innerHTML = "";
   } else {
-    p.innerHTML = "Nom Non Valide";
+    p.innerHTML = "Nom non valide, veuillez rééssayer";
+  }
+}
+
+function validlastName(inputaddress) {
+  let address = new RegExp(
+    "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$",
+    "g"
+  );
+
+  let p = inputaddress.nextElementSibling;
+
+  if (address.test(inputaddress.value)) {
+    p.innerHTML = "";
+  } else {
+    p.innerHTML = "Adresse non valide, veuillez rééssayer";
+  }
+}
+
+function validlastName(inputcity) {
+  let city = new RegExp(
+    "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$",
+    "g"
+  );
+
+  let p = inputcity.nextElementSibling;
+
+  if (city.test(inputcity.value)) {
+    p.innerHTML = "";
+  } else {
+    p.innerHTML = "Nom de ville non valide, veuillez rééssayer";
+  }
+}
+
+function validEmail(inputEmailElement) {
+  if (!inputEmailElement.checkValidity()) {
+    inputEmailElement.nextElementSibling.innerHTML =
+      inputEmailElement.validationMessage;
+  } else {
+    inputEmailElement.nextElementSibling.innerHTML = "";
   }
 }
