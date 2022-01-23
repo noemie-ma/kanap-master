@@ -135,7 +135,6 @@ function updateElementLocalStorage(tableau, id, color, quantite) {
   });
 
   setLocalStorage(tableau);
-  confirmation();
 }
 
 // FORMULAIRE DE RENSEIGNEMENTS
@@ -207,3 +206,20 @@ function validEmail(inputEmailElement) {
     inputEmailElement.nextElementSibling.innerHTML = "";
   }
 }
+
+let contact = {
+  lastName: document.querySelector("#lastName").value,
+  firstName: document.querySelector("#firstName").value,
+  address: document.querySelector("#address").value,
+  city: document.querySelector("#city").value,
+  email: document.querySelector("#email").value,
+};
+console.log(contact);
+
+let order = document.querySelector(".cart_order_from_submit");
+let products = [];
+let productCartStorage = getLocalStorage();
+for (product of productCartStorage) {
+  product.push(product._id);
+}
+console.log(products);

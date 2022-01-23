@@ -1,3 +1,6 @@
+confirmation();
+collectDatas();
+
 function confirmation() {
   // Eventlistener qui fonctionne seulement si tout les champs sont correctement rempli
   order.addEventListener("click", (event) => {
@@ -18,7 +21,7 @@ function confirmation() {
         .then(function (data) {
           orderId = data.orderId;
         });
-      // SI on a bien obtenu un orderId en réponse on redirige notre utilisateur
+      // Si  obtention d'un orderId en réponse, rediriger utilisateur
       (() => {
         const orderId =
           new URL(location.href).searchParams.get("orderId") || "ERREUR";
@@ -28,10 +31,10 @@ function confirmation() {
     // Fontion qui envoie les id de tout les produits dans le tableau product
     function collectDatas() {
       for (let product of panier) {
-        products.push(product.id);
+        products.push(product._id);
       }
     }
-    // SI tout les champs sont valides (validForm = true) on continue l'execution du code
+    // Si tout les champs sont valides, continue l'execution du code
     if (validForm) {
       if (panier) {
         new Swal({
