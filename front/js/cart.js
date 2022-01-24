@@ -271,8 +271,8 @@ function sendData() {
       body: JSON.stringify({ contact: contact, products: products }),
     })
       // Ensuite on stock la réponse de l'api (orderId)
-      .then(function (response) {
-        if (response.ok) return response.json();
+      .then(function (res) {
+        if (res.ok) return res.json();
       })
       .then(function (data) {
         orderId = data;
