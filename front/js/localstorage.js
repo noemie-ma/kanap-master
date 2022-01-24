@@ -20,3 +20,7 @@ function setLocalStorage(productCartStorage) {
   localStorage.setItem("products", JSON.stringify(productCartStorage));
   alert("Panier mis à jour!!");
 }
+
+function deleteLocalStorage() {
+  localStorage.removeItem("products");
+}
