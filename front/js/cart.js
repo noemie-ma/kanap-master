@@ -21,7 +21,7 @@ function getPanier() {
         <div class="cart__item__content__settings">
           <div class="cart__item__content__settings__quantity">
             <p>Qté : </p>
-            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="1">
+            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantite}">
           </div>
           <div class="cart__item__content__settings__delete">
             <p class="deleteItem">Supprimer</p>
@@ -189,10 +189,7 @@ function validLastName(inputlastName) {
 
 function validAddress(inputaddress) {
   let valid = false;
-  let address = new RegExp(
-    "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$",
-    "g"
-  );
+  let address = new RegExp("[A-Za-z0-9'.-s,]$", "g");
 
   let p = inputaddress.nextElementSibling;
 
@@ -208,10 +205,7 @@ function validAddress(inputaddress) {
 
 function validCity(inputcity) {
   let valid = false;
-  let city = new RegExp(
-    "^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$",
-    "g"
-  );
+  let city = new RegExp("^[a-zA-Z]+(?:[s-][a-zA-Z]+)*$", "g");
 
   let p = inputcity.nextElementSibling;
 
@@ -275,7 +269,7 @@ function sendData() {
         if (res.ok) return res.json();
       })
       .then(function (data) {
-        orderId = data;
+        orderId = data.orderId;
         // supprimer localstorage
         deleteLocalStorage();
         document.location.href = `./confirmation.html?orderId=${orderId}`;
